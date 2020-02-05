@@ -16,7 +16,7 @@ This current works only on Chrome/Chrome Mobile. To get this code running succes
 [Run phrase matcher demo live](https://mdn.github.io/web-speech-api/phrase-matcher/)
 
 ## Speak easy synthesis demo
-[Run synthesis demo live](https://mdn.github.io/web-speech-api/speak-easy-synthesis/)
+[Run synthesis demo live](https://petrix.github.io/web-speech-api/speak-easy-synthesis/)
 
 Type words in the input then submit the form to hear it spoken. You can also select the different voices available on the system, and alter the rate and pitch.
 
