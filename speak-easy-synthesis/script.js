@@ -13,24 +13,29 @@ var voices = [];
 
 function populateVoiceList() {
   voices = synth.getVoices().sort(function (a, b) {
-      const aname = a.name.toUpperCase(), bname = b.name.toUpperCase();
-      if ( aname < bname ) return -1;
-      else if ( aname == bname ) return 0;
-      else return +1;
+    console.log(a, b);
+
+    const aname = a.name.toUpperCase(),
+      bname = b.name.toUpperCase();
+    if (aname < bname) return -1;
+    else if (aname == bname) return 0;
+    else return +1;
   });
   var selectedIndex = voiceSelect.selectedIndex < 0 ? 0 : voiceSelect.selectedIndex;
   voiceSelect.innerHTML = '';
-  for(i = 0; i < voices.length ; i++) {
-    var option = document.createElement('option');
-    option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
-    
-    if(voices[i].default) {
-      option.textContent += ' -- DEFAULT';
+  for (i = 0; i < voices.length; i++) {
+    console.log(voices[i].lang);
+    if (voices[i].lang === 'ru-RU') {
+var option = document.createElement('option');
+      option.textContent = voices[i].name + ' (' + voices[i].lang + ')';
+          option.setAttribute('data-lang', voices[i].lang);
+    option.setAttribute('data-name', voices[i].name);
+        voiceSelect.appendChild(option);
     }
 
-    option.setAttribute('data-lang', voices[i].lang);
-    option.setAttribute('data-name', voices[i].name);
-    voiceSelect.appendChild(option);
+    // if(voices[i].default) {
+    //   option.textContent += ' -- DEFAULT';
+    // }
   }
   voiceSelect.selectedIndex = selectedIndex;
 }
@@ -40,22 +45,22 @@ if (speechSynthesis.onvoiceschanged !== undefined) {
   speechSynthesis.onvoiceschanged = populateVoiceList;
 }
 
-function speak(){
-    if (synth.speaking) {
-        console.error('speechSynthesis.speaking');
-        return;
-    }
-    if (inputTxt.value !== '') {
+function speak() {
+  if (synth.speaking) {
+    console.error('speechSynthesis.speaking');
+    return;
+  }
+  if (inputTxt.value !== '') {
     var utterThis = new SpeechSynthesisUtterance(inputTxt.value);
     utterThis.onend = function (event) {
-        console.log('SpeechSynthesisUtterance.onend');
+      console.log('SpeechSynthesisUtterance.onend');
     }
     utterThis.onerror = function (event) {
-        console.error('SpeechSynthesisUtterance.onerror');
+      console.error('SpeechSynthesisUtterance.onerror');
     }
     var selectedOption = voiceSelect.selectedOptions[0].getAttribute('data-name');
-    for(i = 0; i < voices.length ; i++) {
-      if(voices[i].name === selectedOption) {
+    for (i = 0; i < voices.length; i++) {
+      if (voices[i].name === selectedOption) {
         utterThis.voice = voices[i];
         break;
       }
@@ -66,22 +71,22 @@ function speak(){
   }
 }
 
-inputForm.onsubmit = function(event) {
+inputForm.onsubmit = function (event) {
   event.preventDefault();
-
+  inputTxt.blur();
   speak();
 
-  inputTxt.blur();
+
 }
 
-pitch.onchange = function() {
+pitch.onchange = function () {
   pitchValue.textContent = pitch.value;
 }
 
-rate.onchange = function() {
+rate.onchange = function () {
   rateValue.textContent = rate.value;
 }
 
-voiceSelect.onchange = function(){
+voiceSelect.onchange = function () {
   speak();
 }
